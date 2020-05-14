@@ -16,7 +16,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@likelymindslm/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@likelymindslm/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@likelymindslm/lmbase": ["libs/lmbase/src/index.ts"],
+      "@likelymindslm/lmbase-store": ["libs/lmbase-store/src/index.ts"],
+      "@likelymindslm/lmbase-sync": ["libs/lmbase-sync/src/index.ts"],
+      "@likelymindslm/lmbase-adapter": ["libs/lmbase-adapter/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
