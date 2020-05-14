@@ -112,8 +112,8 @@ export interface Intercom {
   /**
    * When adding new documents to the intercom, the `is_broadcasted` field must be false.
    * The flag will be set to true once all connected broadcast listeners recieve the change.
-   * The broadcast engine will query using this indexed field to get new documents inserted to the intercom, right after
-   * an `indexeddb` `transaction` promise resolves succesfully.
+   * This field is indexed to get new documents inserted to the intercom, right after an `indexeddb`
+   * `transaction` promise resolves succesfully.
    *
    */ is_broadcasted: BOOL;
 }

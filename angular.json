@@ -365,6 +365,38 @@
           "style": "scss"
         }
       }
+    },
+    "lmbase-changestreams": {
+      "projectType": "library",
+      "root": "libs/lmbase-changestreams",
+      "sourceRoot": "libs/lmbase-changestreams/src",
+      "prefix": "likelymindslm",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/lmbase-changestreams/tsconfig.lib.json",
+              "libs/lmbase-changestreams/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/lmbase-changestreams/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/lmbase-changestreams/jest.config.js",
+            "tsConfig": "libs/lmbase-changestreams/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/lmbase-changestreams/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
     }
   },
   "cli": {

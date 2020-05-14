@@ -1,7 +1,17 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { LmbaseAdapterModule } from '@likelymindslm/lmbase-adapter';
+import { LmbaseChangestreamsModule } from '@likelymindslm/lmbase-changestreams';
+import { LmbaseLivequeryModule } from '@likelymindslm/lmbase-livequery';
+import { LmbaseStoreModule } from '@likelymindslm/lmbase-store';
+import { LmbaseSyncModule } from '@likelymindslm/lmbase-sync';
 
 @NgModule({
-  imports: [CommonModule]
+  imports: [
+    LmbaseAdapterModule,
+    LmbaseChangestreamsModule,
+    LmbaseLivequeryModule,
+    LmbaseStoreModule,
+    LmbaseSyncModule
+  ]
 })
 export class LmbaseModule {}
