@@ -1,14 +1,14 @@
 import { async, TestBed } from '@angular/core/testing';
-import { LmbaseAdapterModule } from './lmbase-adapter.module';
+import { LmbaseLivequeryModule } from './lmbase-livequery.module';
 
-describe('LmbaseAdapterModule', () => {
+describe('LmbaseLivequeryModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [LmbaseAdapterModule]
+      imports: [LmbaseLivequeryModule]
     }).compileComponents();
   }));
 
   it('should create', () => {
-    expect(LmbaseAdapterModule).toBeDefined();
+    expect(LmbaseLivequeryModule).toBeDefined();
   });
 });

@@ -43,6 +43,9 @@
     },
     "lmbase-adapter": {
       "tags": []
+    },
+    "lmbase-livequery": {
+      "tags": []
     }
   }
 }

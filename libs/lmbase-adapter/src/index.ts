@@ -1,1 +1,1 @@
-export * from './lib/lmbase-adapter.module';
+export * from './lib/adapter.module';

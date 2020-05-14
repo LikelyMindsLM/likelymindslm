@@ -333,6 +333,38 @@
           "style": "scss"
         }
       }
+    },
+    "lmbase-livequery": {
+      "projectType": "library",
+      "root": "libs/lmbase-livequery",
+      "sourceRoot": "libs/lmbase-livequery/src",
+      "prefix": "likelymindslm",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/lmbase-livequery/tsconfig.lib.json",
+              "libs/lmbase-livequery/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/lmbase-livequery/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/lmbase-livequery/jest.config.js",
+            "tsConfig": "libs/lmbase-livequery/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/lmbase-livequery/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
     }
   },
   "cli": {
