@@ -48,7 +48,7 @@
     "core-js": "^2.5.4",
     "dexie": "^3.0.1",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "~6.5.4",
+    "rxjs": "~6.5.5",
     "zone.js": "^0.10.2"
   },
   "devDependencies": {
