@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import Dexie from 'dexie';
+import Dexie, { Table } from 'dexie';
 import {
   IDocument,
   ICollectionsMetadata,
@@ -21,6 +21,11 @@ export class IdbAdapter extends Dexie implements OnDestroy {
   collections_metadata: Dexie.Table<ICollectionsMetadata, string>;
   intercom: Dexie.Table<Intercom, string>;
 
+  /**
+   * read the collections_metadata objectstore and make it available for use
+   *
+   */ collectionsMetaData = new Map<string, ICollectionsMetadata>();
+
   constructor() {
     /**
      * `indexeddb` Database name, and other dexie config.
@@ -38,6 +43,25 @@ export class IdbAdapter extends Dexie implements OnDestroy {
       collections_metadata: 'collection_name',
       intercom: 'document_id,[collection_name+is_broadcasted]',
     });
+
+    db.transaction('readonly', db.collections_metadata, async (tx) => {
+      await tx
+        .table<ICollectionsMetadata, string>('collections_metadata')
+        .each((collection) => {
+          this.collectionsMetaData.set(collection.collection_name, collection);
+        });
+    })
+      .then(() => {
+        console.log('Read collection_metadata');
+      })
+      .catch((error) => {
+        console.error(error);
+        /**
+         * Need to throw since we are not handling it.
+         * @todo use ngrx generic error handler here...
+         */
+        throw error;
+      });
   }
 
   ngOnDestroy() {}
