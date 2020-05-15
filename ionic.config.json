@@ -1,0 +1,11 @@
+{
+  "defaultProject": "demo-client-app",
+  "projects": {
+    "demo-client-app": {
+      "name": "demo-client-app",
+      "integrations": {},
+      "type": "angular",
+      "root": "apps/demo-client-app"
+    }
+  }
+}

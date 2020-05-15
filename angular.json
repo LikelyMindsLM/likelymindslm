@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "defaultProject": "demo-client-app",
   "projects": {
     "demo-client-app": {
       "projectType": "application",
@@ -21,11 +22,27 @@
             "polyfills": "apps/demo-client-app/src/polyfills.ts",
             "tsConfig": "apps/demo-client-app/tsconfig.app.json",
             "aot": true,
+
             "assets": [
-              "apps/demo-client-app/src/favicon.ico",
-              "apps/demo-client-app/src/assets"
+              {
+                "glob": "**/*",
+                "input": "apps/demo-client-app/src/assets",
+                "output": "assets"
+              },
+              {
+                "glob": "**/*.svg",
+                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "output": "./svg"
+              }
             ],
-            "styles": ["apps/demo-client-app/src/styles.scss"],
+            "styles": [
+              {
+                "input": "apps/demo-client-app/src/theme/variables.scss"
+              },
+              {
+                "input": "apps/demo-client-app/src/global.scss"
+              }
+            ],
             "scripts": []
           },
           "configurations": {
@@ -403,6 +420,12 @@
     "defaultCollection": "@nrwl/angular"
   },
   "schematics": {
+    "@ionic/angular-toolkit:component": {
+      "styleext": "scss"
+    },
+    "@ionic/angular-toolkit:page": {
+      "styleext": "scss"
+    },
     "@nrwl/angular:application": {
       "unitTestRunner": "jest",
       "e2eTestRunner": "cypress"
@@ -410,6 +433,5 @@
     "@nrwl/angular:library": {
       "unitTestRunner": "jest"
     }
-  },
-  "defaultProject": "demo-client-app"
+  }
 }
