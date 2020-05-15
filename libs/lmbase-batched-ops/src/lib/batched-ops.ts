@@ -23,13 +23,24 @@ import * as Automerge from 'automerge';
     this.collectionsMetaData = collectionsMetaData;
   }
 
-  upsert<T = unknown>(collectionName: string, doc: Automerge.Doc<T>) {
+  /**
+   * caller needs to `await` on the promise returned by `upsert`
+   *
+   * @param collectionName name of the collection
+   * @param doc Automerge document
+   *
+   * @returns `documentID` wrapped in a `Promise`
+   */
+  upsert<TDoc>(
+    collectionName: string,
+    doc: Automerge.Doc<TDoc>
+  ): Promise<string> {
     return this.tx.table<IDocument, string>('local_cache').put({
       _id: Automerge.getActorId(doc),
-      serialized_state: Automerge.save(doc),
+      serialized_state: `${Automerge.save(doc)}`,
       metadata: {
         collection_name: collectionName,
-        sort_by_value: '',
+        sort_by_prop_value: '',
       },
     });
   }

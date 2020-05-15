@@ -49,6 +49,12 @@
     },
     "lmbase-shared-types": {
       "tags": []
+    },
+    "lmbase-store": {
+      "tags": []
+    },
+    "lmbase-collection": {
+      "tags": []
     }
   }
 }

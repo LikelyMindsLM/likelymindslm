@@ -34,6 +34,10 @@
       ],
       "@likelymindslm/lmbase-shared-types": [
         "libs/lmbase-shared-types/src/index.ts"
+      ],
+      "@likelymindslm/lmbase-store": ["libs/lmbase-store/src/index.ts"],
+      "@likelymindslm/lmbase-collection": [
+        "libs/lmbase-collection/src/index.ts"
       ]
     }
   },

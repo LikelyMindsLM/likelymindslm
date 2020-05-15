@@ -22,7 +22,6 @@
             "polyfills": "apps/demo-client-app/src/polyfills.ts",
             "tsConfig": "apps/demo-client-app/tsconfig.app.json",
             "aot": true,
-
             "assets": [
               {
                 "glob": "**/*",
@@ -406,6 +405,70 @@
             "tsConfig": "libs/lmbase-batched-ops/tsconfig.spec.json",
             "passWithNoTests": true,
             "setupFile": "libs/lmbase-batched-ops/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "lmbase-store": {
+      "projectType": "library",
+      "root": "libs/lmbase-store",
+      "sourceRoot": "libs/lmbase-store/src",
+      "prefix": "likelymindslm",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/lmbase-store/tsconfig.lib.json",
+              "libs/lmbase-store/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/lmbase-store/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/lmbase-store/jest.config.js",
+            "tsConfig": "libs/lmbase-store/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/lmbase-store/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "lmbase-collection": {
+      "projectType": "library",
+      "root": "libs/lmbase-collection",
+      "sourceRoot": "libs/lmbase-collection/src",
+      "prefix": "likelymindslm",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/lmbase-collection/tsconfig.lib.json",
+              "libs/lmbase-collection/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/lmbase-collection/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/lmbase-collection/jest.config.js",
+            "tsConfig": "libs/lmbase-collection/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/lmbase-collection/src/test-setup.ts"
           }
         }
       },

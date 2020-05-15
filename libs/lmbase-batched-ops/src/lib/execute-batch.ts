@@ -17,7 +17,7 @@ import { Transaction } from 'dexie';
  */ export class BatchedOpsBuilder {
   constructor(
     docIDsToRead: string[],
-    ops: (op: BatchedOps, documentsRead: IDocument[]) => void,
+    ops: (op: BatchedOps, documentsRead: Promise<IDocument[]>) => void,
     idbAdapter: IdbAdapter
   ) {
     idbAdapter.transaction(
@@ -29,15 +29,24 @@ import { Transaction } from 'dexie';
     );
   }
 
+  /**
+   *
+   * @param docIDsToRead Document IDs to read (in the same transaction), before performing the write operations
+   * @param ops
+   * @param tx
+   * @param collectionsMetaData
+   *
+   * Error at any point will rollback the `indexeddb` objectstores
+   */
   execute(
-    docIDsToRead: string[], // Document IDs to read (in the same transaction), before performing the write operations
-    ops: (op: BatchedOps, documentsRead: IDocument[]) => void,
+    docIDsToRead: string[],
+    ops: (op: BatchedOps, documentsRead: Promise<IDocument[]>) => void,
     tx: Transaction,
     collectionsMetaData: Map<string, ICollectionsMetadata>
   ) {
-    /**
-     * @todo read docs first
-     */
-    ops(new BatchedOps(tx, collectionsMetaData), []);
+    const documentsRead = tx
+      .table<IDocument, string>('local_cache')
+      .bulkGet(docIDsToRead);
+    ops(new BatchedOps(tx, collectionsMetaData), documentsRead);
   }
 }
