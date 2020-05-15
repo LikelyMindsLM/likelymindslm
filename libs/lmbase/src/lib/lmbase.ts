@@ -1,11 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Adapter } from '@likelymindslm/lmbase-adapter';
+import { IdbAdapter } from '@likelymindslm/lmbase-idb-adapter';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Lmbase implements OnDestroy {
-  constructor(adapter: Adapter) {}
+  constructor(idbAdapter: IdbAdapter) {}
 
   ngOnDestroy() {}
 }
