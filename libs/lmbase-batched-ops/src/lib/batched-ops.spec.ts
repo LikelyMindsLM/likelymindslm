@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { IdbAdapter } from './idb-adapter';
+import { BatchedOps } from './batched-ops';
 
-describe('IdbAdapter', () => {
-  let service: IdbAdapter;
+describe('BatchedOps', () => {
+  let service: BatchedOps;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(IdbAdapter);
+    service = TestBed.inject(BatchedOps);
   });
 
   it('should be created', () => {
