@@ -29,19 +29,25 @@
     "api": {
       "tags": []
     },
-    "api-interfaces": {
-      "tags": []
-    },
     "lmbase": {
       "tags": []
     },
-    "lmbase-store": {
+    "lmbase-batched-ops": {
       "tags": []
     },
-    "lmbase-sync": {
+    "lmbase-change-streams": {
       "tags": []
     },
-    "lmbase-adapter": {
+    "lmbase-idb-adapter": {
+      "tags": []
+    },
+    "lmbase-live-query": {
+      "tags": []
+    },
+    "lmbase-remote-sync": {
+      "tags": []
+    },
+    "lmbase-shared-types": {
       "tags": []
     }
   }

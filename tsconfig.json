@@ -16,11 +16,25 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@likelymindslm/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@likelymindslm/lmbase": ["libs/lmbase/src/index.ts"],
-      "@likelymindslm/lmbase-store": ["libs/lmbase-store/src/index.ts"],
-      "@likelymindslm/lmbase-sync": ["libs/lmbase-sync/src/index.ts"],
-      "@likelymindslm/lmbase-adapter": ["libs/lmbase-adapter/src/index.ts"]
+      "@likelymindslm/lmbase-batched-ops": [
+        "libs/lmbase-batched-ops/src/index.ts"
+      ],
+      "@likelymindslm/lmbase-change-streams": [
+        "libs/lmbase-change-streams/src/index.ts"
+      ],
+      "@likelymindslm/lmbase-idb-adapter": [
+        "libs/lmbase-idb-adapter/src/index.ts"
+      ],
+      "@likelymindslm/lmbase-live-query": [
+        "libs/lmbase-live-query/src/index.ts"
+      ],
+      "@likelymindslm/lmbase-remote-sync": [
+        "libs/lmbase-remote-sync/src/index.ts"
+      ],
+      "@likelymindslm/lmbase-shared-types": [
+        "libs/lmbase-shared-types/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

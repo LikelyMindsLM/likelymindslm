@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "defaultProject": "demo-client-app",
   "projects": {
     "demo-client-app": {
       "projectType": "application",
@@ -21,11 +22,27 @@
             "polyfills": "apps/demo-client-app/src/polyfills.ts",
             "tsConfig": "apps/demo-client-app/tsconfig.app.json",
             "aot": true,
+
             "assets": [
-              "apps/demo-client-app/src/favicon.ico",
-              "apps/demo-client-app/src/assets"
+              {
+                "glob": "**/*",
+                "input": "apps/demo-client-app/src/assets",
+                "output": "assets"
+              },
+              {
+                "glob": "**/*.svg",
+                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "output": "./svg"
+              }
             ],
-            "styles": ["apps/demo-client-app/src/styles.scss"],
+            "styles": [
+              {
+                "input": "apps/demo-client-app/src/theme/variables.scss"
+              },
+              {
+                "input": "apps/demo-client-app/src/global.scss"
+              }
+            ],
             "scripts": []
           },
           "configurations": {
@@ -180,9 +197,9 @@
         }
       }
     },
-    "api-interfaces": {
-      "root": "libs/api-interfaces",
-      "sourceRoot": "libs/api-interfaces/src",
+    "lmbase-shared-types": {
+      "root": "libs/lmbase-shared-types",
+      "sourceRoot": "libs/lmbase-shared-types/src",
       "projectType": "library",
       "schematics": {},
       "architect": {
@@ -190,17 +207,17 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "libs/api-interfaces/tsconfig.lib.json",
-              "libs/api-interfaces/tsconfig.spec.json"
+              "libs/lmbase-shared-types/tsconfig.lib.json",
+              "libs/lmbase-shared-types/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/api-interfaces/**"]
+            "exclude": ["**/node_modules/**", "!libs/lmbase-shared-types/**"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/api-interfaces/jest.config.js",
-            "tsConfig": "libs/api-interfaces/tsconfig.spec.json",
+            "jestConfig": "libs/lmbase-shared-types/jest.config.js",
+            "tsConfig": "libs/lmbase-shared-types/tsconfig.spec.json",
             "passWithNoTests": true
           }
         }
@@ -238,29 +255,29 @@
         }
       }
     },
-    "lmbase-store": {
+    "lmbase-live-query": {
       "projectType": "library",
-      "root": "libs/lmbase-store",
-      "sourceRoot": "libs/lmbase-store/src",
+      "root": "libs/lmbase-live-query",
+      "sourceRoot": "libs/lmbase-live-query/src",
       "prefix": "likelymindslm",
       "architect": {
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "libs/lmbase-store/tsconfig.lib.json",
-              "libs/lmbase-store/tsconfig.spec.json"
+              "libs/lmbase-live-query/tsconfig.lib.json",
+              "libs/lmbase-live-query/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/lmbase-store/**"]
+            "exclude": ["**/node_modules/**", "!libs/lmbase-live-query/**"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/lmbase-store/jest.config.js",
-            "tsConfig": "libs/lmbase-store/tsconfig.spec.json",
+            "jestConfig": "libs/lmbase-live-query/jest.config.js",
+            "tsConfig": "libs/lmbase-live-query/tsconfig.spec.json",
             "passWithNoTests": true,
-            "setupFile": "libs/lmbase-store/src/test-setup.ts"
+            "setupFile": "libs/lmbase-live-query/src/test-setup.ts"
           }
         }
       },
@@ -270,29 +287,29 @@
         }
       }
     },
-    "lmbase-sync": {
+    "lmbase-remote-sync": {
       "projectType": "library",
-      "root": "libs/lmbase-sync",
-      "sourceRoot": "libs/lmbase-sync/src",
+      "root": "libs/lmbase-remote-sync",
+      "sourceRoot": "libs/lmbase-remote-sync/src",
       "prefix": "likelymindslm",
       "architect": {
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "libs/lmbase-sync/tsconfig.lib.json",
-              "libs/lmbase-sync/tsconfig.spec.json"
+              "libs/lmbase-remote-sync/tsconfig.lib.json",
+              "libs/lmbase-remote-sync/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/lmbase-sync/**"]
+            "exclude": ["**/node_modules/**", "!libs/lmbase-remote-sync/**"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/lmbase-sync/jest.config.js",
-            "tsConfig": "libs/lmbase-sync/tsconfig.spec.json",
+            "jestConfig": "libs/lmbase-remote-sync/jest.config.js",
+            "tsConfig": "libs/lmbase-remote-sync/tsconfig.spec.json",
             "passWithNoTests": true,
-            "setupFile": "libs/lmbase-sync/src/test-setup.ts"
+            "setupFile": "libs/lmbase-remote-sync/src/test-setup.ts"
           }
         }
       },
@@ -302,29 +319,93 @@
         }
       }
     },
-    "lmbase-adapter": {
+    "lmbase-idb-adapter": {
       "projectType": "library",
-      "root": "libs/lmbase-adapter",
-      "sourceRoot": "libs/lmbase-adapter/src",
+      "root": "libs/lmbase-idb-adapter",
+      "sourceRoot": "libs/lmbase-idb-adapter/src",
       "prefix": "likelymindslm",
       "architect": {
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "libs/lmbase-adapter/tsconfig.lib.json",
-              "libs/lmbase-adapter/tsconfig.spec.json"
+              "libs/lmbase-idb-adapter/tsconfig.lib.json",
+              "libs/lmbase-idb-adapter/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/lmbase-adapter/**"]
+            "exclude": ["**/node_modules/**", "!libs/lmbase-idb-adapter/**"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/lmbase-adapter/jest.config.js",
-            "tsConfig": "libs/lmbase-adapter/tsconfig.spec.json",
+            "jestConfig": "libs/lmbase-idb-adapter/jest.config.js",
+            "tsConfig": "libs/lmbase-idb-adapter/tsconfig.spec.json",
             "passWithNoTests": true,
-            "setupFile": "libs/lmbase-adapter/src/test-setup.ts"
+            "setupFile": "libs/lmbase-idb-adapter/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "lmbase-change-streams": {
+      "projectType": "library",
+      "root": "libs/lmbase-change-streams",
+      "sourceRoot": "libs/lmbase-change-streams/src",
+      "prefix": "likelymindslm",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/lmbase-change-streams/tsconfig.lib.json",
+              "libs/lmbase-change-streams/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/lmbase-change-streams/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/lmbase-change-streams/jest.config.js",
+            "tsConfig": "libs/lmbase-change-streams/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/lmbase-change-streams/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "lmbase-batched-ops": {
+      "projectType": "library",
+      "root": "libs/lmbase-batched-ops",
+      "sourceRoot": "libs/lmbase-batched-ops/src",
+      "prefix": "likelymindslm",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/lmbase-batched-ops/tsconfig.lib.json",
+              "libs/lmbase-batched-ops/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/lmbase-batched-ops/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/lmbase-batched-ops/jest.config.js",
+            "tsConfig": "libs/lmbase-batched-ops/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/lmbase-batched-ops/src/test-setup.ts"
           }
         }
       },
@@ -339,6 +420,12 @@
     "defaultCollection": "@nrwl/angular"
   },
   "schematics": {
+    "@ionic/angular-toolkit:component": {
+      "styleext": "scss"
+    },
+    "@ionic/angular-toolkit:page": {
+      "styleext": "scss"
+    },
     "@nrwl/angular:application": {
       "unitTestRunner": "jest",
       "e2eTestRunner": "cypress"
@@ -346,6 +433,5 @@
     "@nrwl/angular:library": {
       "unitTestRunner": "jest"
     }
-  },
-  "defaultProject": "demo-client-app"
+  }
 }
