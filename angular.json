@@ -142,20 +142,20 @@
         }
       }
     },
-    "api": {
-      "root": "apps/api",
-      "sourceRoot": "apps/api/src",
+    "demo-server-app": {
+      "root": "apps/demo-server-app",
+      "sourceRoot": "apps/demo-server-app/src",
       "projectType": "application",
-      "prefix": "api",
+      "prefix": "demo-server-app",
       "schematics": {},
       "architect": {
         "build": {
           "builder": "@nrwl/node:build",
           "options": {
-            "outputPath": "dist/apps/api",
-            "main": "apps/api/src/main.ts",
-            "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": ["apps/api/src/assets"]
+            "outputPath": "dist/apps/demo-server-app",
+            "main": "apps/demo-server-app/src/main.ts",
+            "tsConfig": "apps/demo-server-app/tsconfig.app.json",
+            "assets": ["apps/demo-server-app/src/assets"]
           },
           "configurations": {
             "production": {
@@ -164,8 +164,8 @@
               "inspect": false,
               "fileReplacements": [
                 {
-                  "replace": "apps/api/src/environments/environment.ts",
-                  "with": "apps/api/src/environments/environment.prod.ts"
+                  "replace": "apps/demo-server-app/src/environments/environment.ts",
+                  "with": "apps/demo-server-app/src/environments/environment.prod.ts"
                 }
               ]
             }
@@ -174,24 +174,24 @@
         "serve": {
           "builder": "@nrwl/node:execute",
           "options": {
-            "buildTarget": "api:build"
+            "buildTarget": "demo-server-app:build"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "apps/api/tsconfig.app.json",
-              "apps/api/tsconfig.spec.json"
+              "apps/demo-server-app/tsconfig.app.json",
+              "apps/demo-server-app/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/api/**"]
+            "exclude": ["**/node_modules/**", "!apps/demo-server-app/**"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "apps/api/jest.config.js",
-            "tsConfig": "apps/api/tsconfig.spec.json",
+            "jestConfig": "apps/demo-server-app/jest.config.js",
+            "tsConfig": "apps/demo-server-app/tsconfig.spec.json",
             "passWithNoTests": true
           }
         }

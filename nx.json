@@ -26,7 +26,7 @@
       "tags": [],
       "implicitDependencies": ["demo-client-app"]
     },
-    "api": {
+    "demo-server-app": {
       "tags": []
     },
     "lmbase": {
