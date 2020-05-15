@@ -3,11 +3,11 @@ import Dexie from 'dexie';
 import {
   IDocument,
   ICollectionsMetadata,
-  Intercom
-} from './idb-adapter.models';
+  Intercom,
+} from '@likelymindslm/lmbase-shared-types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class IdbAdapter extends Dexie implements OnDestroy {
   /**
@@ -36,7 +36,7 @@ export class IdbAdapter extends Dexie implements OnDestroy {
     db.version(1).stores({
       local_cache: '_id,[metadata.collection_name+metadata.sort_by_value]',
       collections_metadata: 'collection_name',
-      intercom: 'document_id,[collection_name+is_broadcasted]'
+      intercom: 'document_id,[collection_name+is_broadcasted]',
     });
   }
 
