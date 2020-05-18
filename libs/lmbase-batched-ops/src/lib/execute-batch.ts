@@ -1,10 +1,10 @@
 import type { IdbAdapter } from '@likelymindslm/lmbase-idb-adapter';
-import {
-  IDocument,
-  ICollectionsMetadata,
-} from '@likelymindslm/lmbase-shared-types';
+import { IDocument } from '@likelymindslm/lmbase-shared-types';
 import { BatchedOps } from './batched-ops';
 import { Transaction } from 'dexie';
+import { CollectionsMetadata } from '@likelymindslm/lmbase-collection';
+
+import * as Automerge from 'automerge';
 
 /**
  * Clientside CRUD occurs in batches, and each batch is treated as an atomic unit.
@@ -15,16 +15,33 @@ import { Transaction } from 'dexie';
  *
  *
  */ export class BatchedOpsBuilder {
+  private readonly idbAdapter: IdbAdapter;
+  private readonly collectionsMetadata: CollectionsMetadata;
+
   constructor(
-    docIDsToRead: string[],
-    ops: (op: BatchedOps, documentsRead: Promise<IDocument[]>) => void,
-    idbAdapter: IdbAdapter
+    idbAdapter: IdbAdapter,
+    collectionsMetadata: CollectionsMetadata
   ) {
-    idbAdapter.transaction(
+    this.idbAdapter = idbAdapter;
+    this.collectionsMetadata = collectionsMetadata;
+  }
+
+  /**
+   * @param docIDsToRead Document IDs to read (in the same transaction), before performing the write operations
+   * @param ops BatchedOps
+   *
+   * Caller must `await` on the returned promise
+   *
+   *
+   */ async executeBatch(
+    docIDsToRead: string[],
+    ops: (op: BatchedOps, documentsRead: Automerge.Doc<unknown>[]) => void
+  ) {
+    await this.idbAdapter.transaction(
       'readwrite',
-      [idbAdapter.local_cache, idbAdapter.intercom],
-      (tx) => {
-        this.execute(docIDsToRead, ops, tx, idbAdapter.collectionsMetaData);
+      [this.idbAdapter.local_cache, this.idbAdapter.intercom],
+      async (tx) => {
+        await this.execute(docIDsToRead, ops, tx, this.collectionsMetadata);
       }
     );
   }
@@ -38,15 +55,22 @@ import { Transaction } from 'dexie';
    *
    * Error at any point will rollback the `indexeddb` objectstores
    */
-  execute(
+  private async execute(
     docIDsToRead: string[],
-    ops: (op: BatchedOps, documentsRead: Promise<IDocument[]>) => void,
+    ops: (op: BatchedOps, documentsRead: Automerge.Doc<unknown>[]) => void,
     tx: Transaction,
-    collectionsMetaData: Map<string, ICollectionsMetadata>
+    collectionsMetadata: CollectionsMetadata
   ) {
-    const documentsRead = tx
+    const _documentsRead = await tx
       .table<IDocument, string>('local_cache')
       .bulkGet(docIDsToRead);
-    ops(new BatchedOps(tx, collectionsMetaData), documentsRead);
+
+    const documentsRead =
+      _documentsRead && _documentsRead.length && _documentsRead[0]
+        ? _documentsRead.map((docs) => {
+            return Automerge.load(docs.serialized_state);
+          })
+        : _documentsRead;
+    ops(new BatchedOps(tx, collectionsMetadata), documentsRead);
   }
 }

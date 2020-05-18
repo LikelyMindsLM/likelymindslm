@@ -6,6 +6,8 @@ import {
   Intercom,
 } from '@likelymindslm/lmbase-shared-types';
 
+import { CollectionsMetadata } from '@likelymindslm/lmbase-collection';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -17,16 +19,12 @@ export class IdbAdapter extends Dexie implements OnDestroy {
    * A dexie `Table` is an `indexeddb` `objectstore`.
    */
 
-  local_cache: Dexie.Table<IDocument, string>;
-  collections_metadata: Dexie.Table<ICollectionsMetadata, string>;
-  intercom: Dexie.Table<Intercom, string>;
+  local_cache: Table<IDocument, string>;
+  intercom: Table<Intercom, string>;
+  collections_metadata: Table<ICollectionsMetadata, string>;
+  client_metadata: Table<ICollectionsMetadata, string>;
 
-  /**
-   * read the collections_metadata objectstore and make it available for use
-   *
-   */ collectionsMetaData = new Map<string, ICollectionsMetadata>();
-
-  constructor() {
+  constructor(private collectionsMetadata: CollectionsMetadata) {
     /**
      * `indexeddb` Database name, and other dexie config.
      *
@@ -39,29 +37,11 @@ export class IdbAdapter extends Dexie implements OnDestroy {
      */
 
     db.version(1).stores({
-      local_cache: '_id,[metadata.collection_name+metadata.sort_by_value]',
-      collections_metadata: 'collection_name',
+      local_cache: '_id,[metadata.collection_name+metadata.sort_by_prop_value]',
       intercom: 'document_id,[collection_name+is_broadcasted]',
+      collections_metadata: 'collection_name',
+      client_metadata: '',
     });
-
-    db.transaction('readonly', db.collections_metadata, async (tx) => {
-      await tx
-        .table<ICollectionsMetadata, string>('collections_metadata')
-        .each((collection) => {
-          this.collectionsMetaData.set(collection.collection_name, collection);
-        });
-    })
-      .then(() => {
-        console.log('Read collection_metadata');
-      })
-      .catch((error) => {
-        console.error(error);
-        /**
-         * Need to throw since we are not handling it.
-         * @todo use ngrx generic error handler here...
-         */
-        throw error;
-      });
   }
 
   ngOnDestroy() {}

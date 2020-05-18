@@ -4,36 +4,75 @@ import {
   BatchedOpsBuilder,
   BatchedOps,
 } from '@likelymindslm/lmbase-batched-ops';
-import { IDocument } from '@likelymindslm/lmbase-shared-types';
+import {
+  IDocument,
+  ICollectionsMetadata,
+} from '@likelymindslm/lmbase-shared-types';
 import {
   CollectionsManager,
   Collection,
+  CollectionsMetadata,
 } from '@likelymindslm/lmbase-collection';
-
-export type T<P> = P extends undefined ? number : string;
 
 @Injectable({
   providedIn: 'root',
 })
 export class Lmbase implements OnDestroy {
+  private isInitialized = false;
   constructor(
     private idbAdapter: IdbAdapter,
-    private collectionsManager: CollectionsManager
+    private collectionsMetadata: CollectionsMetadata
   ) {}
 
   /**
-   * If collectionName is provided then return that collection
-   * else, return `CollectionsManager`
+   * Lmbase will automatically `migrate` users of the client app which are using a older
+   * version of the schema during initialization.
+   *
+   * This method initializes `collectionsMetadata` and provides instance of `CollectionsManager`
+   * to the `schemaOpsCallback`. The client app will use this instance to perform
+   * schema registration and changes.
+   *
+   * The client app should call `init` from a `schema.ts` file, which should be treated as
+   * an `append only` type of file, where new changes are appended to the bottom of the file,
+   * and previous entries are never touched once the webapp is in production.
+   *
+   * Doing this will maintain a `version` system, without explicitly tracking
+   * things like version numbers, and migration procedures, etc..
+   *
+   * Caller needs to `await` on promise returned by `init`
+   *
+   *
+   * @param schemaOpsCallback `init` will provide an instance of `CollectionsManager` to this callback
+   *
+   *
+   *
+   */ async init(
+    schemaOpsCallback: (op: CollectionsManager) => void
+  ): Promise<void> {
+    await this.idbAdapter.transaction(
+      'readwrite',
+      [this.idbAdapter.collections_metadata, this.idbAdapter.local_cache],
+      (tx) => {
+        schemaOpsCallback(new CollectionsManager(tx));
+      }
+    );
+    await this._collectionsMetadataInit();
+    this.isInitialized = true;
+  }
+
+  /**
+   * Returns a `Collection` instance
    */
 
-  collection(collectionName: string): Collection;
-  collection(): CollectionsManager;
-  collection(name?: string) {
-    if (name) {
-      return new Collection(name);
-    } else {
-      return this.collectionsManager;
+  collection(collectionName: string): Collection {
+    if (!this.isInitialized) {
+      throw new Error(
+        `Lmbase not initialized! Please call 'init' and 'await' on that returned promise before proceeding.
+        The init() method takes a callback where you need to register you schema`
+      );
     }
+
+    return new Collection(collectionName);
   }
 
   /**
@@ -42,11 +81,34 @@ export class Lmbase implements OnDestroy {
    * occur inside the same `indexeddb` database transaction.
    *
    *
-   */ startNewBatchedOp(
-    docIDsToRead: string[],
-    opsCallback: (ops: BatchedOps, documentsRead: Promise<IDocument[]>) => void
-  ) {
-    return new BatchedOpsBuilder(docIDsToRead, opsCallback, this.idbAdapter);
+   */ startNewBatchedOp() {
+    if (!this.isInitialized) {
+      throw new Error(
+        `Lmbase not initialized! Please call 'init' and 'await' on that returned promise before proceeding.
+        The init() method takes a callback where you need to register you schema`
+      );
+    }
+    return new BatchedOpsBuilder(this.idbAdapter, this.collectionsMetadata);
+  }
+
+  /**
+   * Populates `collectionsMetadata` with values from `collections_metadata` objectstore
+   */
+  private async _collectionsMetadataInit(): Promise<void> {
+    return this.idbAdapter.transaction(
+      'readonly',
+      this.idbAdapter.collections_metadata,
+      (tx) => {
+        return tx
+          .table<ICollectionsMetadata, string>('collections_metadata')
+          .each((collection) => {
+            this.collectionsMetadata.upsert(
+              collection.collection_name,
+              collection
+            );
+          });
+      }
+    );
   }
 
   ngOnDestroy() {}

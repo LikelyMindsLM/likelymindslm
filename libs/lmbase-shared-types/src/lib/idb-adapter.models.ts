@@ -71,7 +71,20 @@ export interface ICollectionsMetadata {
    * Will be a dot deliminated string for nested paths
    *
    */ sort_by_prop_path: string[];
+
+  /**
+   * An array of unique description strings to identify migrations that have been applied
+   * succesfully to the collection.
+   *
+   *
+   */ migrationDescriptions: string[];
 }
+
+/**
+ * Describes the model of a document  in the `client_metadata` objectstore
+ */
+
+export interface IClientMetadata {}
 
 /**
  * Describes the model of a document  in the `intercom` objectstore.
