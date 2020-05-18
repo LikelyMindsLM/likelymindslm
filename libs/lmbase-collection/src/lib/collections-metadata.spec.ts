@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BatchedOps } from './batched-ops';
+import { CollectionsMetadata } from './collections-metadata';
 
-describe('BatchedOps', () => {
-  let service: BatchedOps;
+describe('CollectionsMetadataService', () => {
+  let service: CollectionsMetadata;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(BatchedOps);
+    service = TestBed.inject(CollectionsMetadata);
   });
 
   it('should be created', () => {

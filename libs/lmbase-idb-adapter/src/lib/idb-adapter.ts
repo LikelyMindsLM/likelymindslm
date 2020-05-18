@@ -1,13 +1,15 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import Dexie from 'dexie';
+import Dexie, { Table } from 'dexie';
 import {
   IDocument,
   ICollectionsMetadata,
-  Intercom
-} from './idb-adapter.models';
+  Intercom,
+} from '@likelymindslm/lmbase-shared-types';
+
+import { CollectionsMetadata } from '@likelymindslm/lmbase-collection';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class IdbAdapter extends Dexie implements OnDestroy {
   /**
@@ -17,11 +19,12 @@ export class IdbAdapter extends Dexie implements OnDestroy {
    * A dexie `Table` is an `indexeddb` `objectstore`.
    */
 
-  local_cache: Dexie.Table<IDocument, string>;
-  collections_metadata: Dexie.Table<ICollectionsMetadata, string>;
-  intercom: Dexie.Table<Intercom, string>;
+  local_cache: Table<IDocument, string>;
+  intercom: Table<Intercom, string>;
+  collections_metadata: Table<ICollectionsMetadata, string>;
+  client_metadata: Table<ICollectionsMetadata, string>;
 
-  constructor() {
+  constructor(private collectionsMetadata: CollectionsMetadata) {
     /**
      * `indexeddb` Database name, and other dexie config.
      *
@@ -34,9 +37,10 @@ export class IdbAdapter extends Dexie implements OnDestroy {
      */
 
     db.version(1).stores({
-      local_cache: '_id,[metadata.collection_name+metadata.sort_by_value]',
+      local_cache: '_id,[metadata.collection_name+metadata.sort_by_prop_value]',
+      intercom: 'document_id,[collection_name+is_broadcasted]',
       collections_metadata: 'collection_name',
-      intercom: 'document_id,[collection_name+is_broadcasted]'
+      client_metadata: '',
     });
   }
 

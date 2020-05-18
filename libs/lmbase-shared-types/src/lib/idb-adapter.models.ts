@@ -45,11 +45,11 @@ export interface IDocumentMetadata {
    */ collection_name: string;
 
   /**
-   * Value of the primary sort_by field is replicated in the document metadata.
+   * Value of `sort_by_prop_path` field is replicated in the document metadata.
    * Indexeddb sorts the documents stored using this value.
    * Lmbase relies on the indexeddb sort order as primary sorting for creating infinite scrolling views.
    *
-   */ sort_by_value: string;
+   */ sort_by_prop_value: string;
 }
 
 /**
@@ -70,8 +70,21 @@ export interface ICollectionsMetadata {
    * Indexeddb sorts the documents stored using the value corresponding to this key.
    * Will be a dot deliminated string for nested paths
    *
-   */ sort_by_prop: string;
+   */ sort_by_prop_path: string[];
+
+  /**
+   * An array of unique description strings to identify migrations that have been applied
+   * succesfully to the collection.
+   *
+   *
+   */ migrationDescriptions: string[];
 }
+
+/**
+ * Describes the model of a document  in the `client_metadata` objectstore
+ */
+
+export interface IClientMetadata {}
 
 /**
  * Describes the model of a document  in the `intercom` objectstore.
@@ -123,5 +136,5 @@ export interface Intercom {
  *
  */ export enum BOOL {
   TRUE = 1,
-  FALSE = 0
+  FALSE = 0,
 }

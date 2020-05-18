@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { LmbaseService } from './lmbase.service';
 
 @Component({
-  selector: 'app-home',
+  selector: 'likelymindslm-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit, OnDestroy {
+  constructor(private lmbaseService: LmbaseService) {}
 
-  constructor() {}
+  async ngOnInit() {
+    await this.lmbaseService.test();
+  }
 
+  async ngOnDestroy() {}
 }
