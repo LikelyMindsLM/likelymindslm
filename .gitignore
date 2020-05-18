@@ -3,6 +3,7 @@
 # ConfigVars
 /tools/configVars/*
 !/tools/configVars/sample.ts
+!/tools/configVars/index.ts
 
 
 # compiled output

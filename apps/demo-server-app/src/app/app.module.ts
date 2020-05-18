@@ -6,9 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-const uri =
-  'mongodb+srv://mongooseConnect:<password>@lminds-v1ylg.azure.mongodb.net/test?retryWrites=true&w=majority';
-
+export const CONNECTION_STRING = `mongodb+srv://${'username'}:${'password'}@${'host'}/test?retryWrites=true&w=majority`;
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost/nest'),
