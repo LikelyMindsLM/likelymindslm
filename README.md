@@ -7,15 +7,8 @@ This project is currently a work in progress
 
 ## Development server
 
-Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng g component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run `npx nx serve demo-client-app` or `npx nx serve demo-server-app`.
+The app will automatically reload if you change any of the source files.
 
 ## Running unit tests
 
