@@ -1,18 +1,38 @@
 import { Module } from '@nestjs/common';
 
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-export const CONNECTION_STRING = `mongodb+srv://${'username'}:${'password'}@${'host'}/test?retryWrites=true&w=majority`;
+import { mongoDB } from '@demo-server-app/config';
+import { IMongoAtlasConfigObj } from '@likelymindslm/lmbase-shared-types';
+import { DbModule } from '../db/db.module';
+
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/nest'),
     ConfigModule.forRoot({
+      load: [mongoDB],
       isGlobal: true,
     }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        const mongoAtlas = configService.get<IMongoAtlasConfigObj>(
+          'mongoAtlas'
+        );
+        const CONNECTION_STRING =
+          `mongodb+srv://${mongoAtlas.username}:${mongoAtlas.password}` +
+          `@${mongoAtlas.host}/test?retryWrites=true&w=majority`;
+
+        return {
+          uri: CONNECTION_STRING,
+        };
+      },
+      inject: [ConfigService],
+    }),
+    DbModule,
   ],
   controllers: [AppController],
   providers: [AppService],

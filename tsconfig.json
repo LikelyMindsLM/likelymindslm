@@ -14,8 +14,9 @@
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
+      "@demo-server-app/config": ["tools/configVars/index.ts"],
       "@likelymindslm/lmbase": ["libs/lmbase/src/index.ts"],
       "@likelymindslm/lmbase-batched-ops": [
         "libs/lmbase-batched-ops/src/index.ts"
