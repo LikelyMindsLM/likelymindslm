@@ -40,7 +40,7 @@
     "@ionic/angular": "^5.1.1",
     "@nestjs/common": "^6.8.3",
     "@nestjs/config": "^0.4.2",
-    "@nestjs/core": "^6.8.3",
+    "@nestjs/core": "^9.0.5",
     "@nestjs/mongoose": "^7.0.1",
     "@nestjs/platform-express": "^6.8.3",
     "@ngrx/effects": "9.1.2",
